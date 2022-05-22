@@ -13,8 +13,6 @@ services:
     command: -p 5435
     expose:
       - 5435
-    networks:
-      - internal-network
   downloadmicroservice:
     container_name: download-microservice
     depends_on:
@@ -24,15 +22,3 @@ services:
       dockerfile: src/main/docker/Dockerfile.jvm
     ports:
       - "8081:8081"
-    expose:
-      - 8081
-    networks:
-      - internal-network
-      - inter-server-communication
-
-networks:
-  inter-server-communication:
-    external: true
-  internal-network:
-    name: internal-network
-    driver: bridge

@@ -1,0 +1,15 @@
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'So What',            'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Freddie Freeloader', 'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Blue in Green',      'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'All Blues',          'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Flamenco Sketches',  'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Don''t Stay',        'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Somewhere I belong', 'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Lying from You',     'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Hit the Floor',      'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Easier to Run',      'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'The Awakening',      'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Damnation',          'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Messiah',            'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'The Fall of Man',    'x');
+INSERT INTO Download(id, productName, link) VALUES (nextval('hibernate_sequence'), 'Monster',            'x');

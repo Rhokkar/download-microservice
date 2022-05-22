@@ -5,36 +5,34 @@ plugins {
 
 repositories {
     mavenCentral()
+
     mavenLocal()
-    // Shared Library
+
+    // Enables usage of libraries hosted on Jitpack
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    // Postgres
-    implementation 'org.postgresql:postgresql:42.3.3'
-    // JPA
-    implementation 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final'
-    // Hibernate
-    implementation 'org.hibernate:hibernate-core:5.6.7.Final'
-    // JAX-RS Client
-    implementation 'org.jboss.resteasy:resteasy-client:5.0.3.Final'
-    // Shared Library
-    implementation 'com.github.Rhokkar:jazzers-shared:main-SNAPSHOT'
-    // https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-orm-panache
-    implementation 'io.quarkus:quarkus-hibernate-orm-panache:2.9.1.Final'
-
-    implementation 'io.quarkus:quarkus-smallrye-openapi'
+    // Quarkus
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-resteasy'
-    implementation 'io.quarkus:quarkus-arc'
-    implementation 'org.jboss.resteasy:resteasy-jackson2-provider:3.0.6.Final'
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'io.rest-assured:rest-assured'
-    implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'redis.clients:jedis:4.2.3'
+
+    // Quarkus Configuration (MicroProfile with SmallRye)
+    implementation 'io.quarkus:quarkus-smallrye-openapi'
+
+    // REST Server (JAX-RS with RESTEasy)
+    implementation("io.quarkus:quarkus-resteasy-jackson")
+
+    // REST Client (JAX-RS with RESTEasy)
+    implementation 'org.jboss.resteasy:resteasy-client:6.0.1.Final'
+
+    // Object-Relational Mapping (Hibernate with Panache)
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
+
+    // Database Driver for PostgreSQL
     implementation("io.quarkus:quarkus-jdbc-postgresql")
+
+    // Jazzers Jitpack Library
+    implementation 'com.github.Rhokkar:jazzers-shared:main-SNAPSHOT'
 }
 
 group 'at.fhv.teamc.jazzers'
@@ -52,4 +50,9 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+// Disable Jitpack Library Caching
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
