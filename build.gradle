@@ -5,7 +5,6 @@ plugins {
 
 repositories {
     mavenCentral()
-
     mavenLocal()
 
     // Enables usage of libraries hosted on Jitpack
