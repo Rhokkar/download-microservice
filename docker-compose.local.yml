@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  downloadmicroservice:
+    networks:
+      - inter_server_connection
+
+networks:
+  inter_server_connection:
+    external: true

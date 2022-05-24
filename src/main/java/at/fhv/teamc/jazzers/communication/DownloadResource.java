@@ -13,11 +13,12 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DownloadResource {
+    private static final String COLLECTION_SERVICE_OWNERSHIP_URI = "http://localhost:8082/api/v1/collection/ownership";
     private static final String CREDENTIAL_SERVICE_URI = "http://10.0.40.165:8080/jazzers-backend-1.0-SNAPSHOT/api/v1/login/customer";
 
     @GET
     public Response byProductName(@QueryParam("username") @DefaultValue("") String username, @QueryParam("password") @DefaultValue("") String password, @QueryParam("productName") @DefaultValue("") String productName) {
-        if (isNotAuthorized(username, password) || isNotOwner(productName)) {
+        if (isNotAuthorized(username, password) || isNotOwner(username, productName)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
@@ -43,7 +44,16 @@ public class DownloadResource {
         return !loginStatus.equals(Response.Status.OK);
     }
 
-    private boolean isNotOwner(String productName) {
-        return false;
+    private boolean isNotOwner(String username, String productName) {
+        Client client = ClientBuilder.newClient();
+
+        Response.Status ownerStatus = client
+                .target(COLLECTION_SERVICE_OWNERSHIP_URI + "?username=" + username + "&productName=" + productName)
+                .request(MediaType.APPLICATION_JSON).get()
+                .getStatusInfo().toEnum();
+
+        client.close();
+
+        return !ownerStatus.equals(Response.Status.OK);
     }
 }
