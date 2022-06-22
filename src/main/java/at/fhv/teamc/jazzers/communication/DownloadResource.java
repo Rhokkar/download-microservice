@@ -10,16 +10,17 @@ import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Path("downloads")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.TEXT_PLAIN)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DownloadResource {
-    private static final String COLLECTION_SERVICE_OWNERSHIP_URI = "http://localhost:8082/api/v1/collection/ownership";
-    private static final String CREDENTIAL_SERVICE_URI = "http://10.0.40.165:8080/jazzers-backend-1.0-SNAPSHOT/api/v1/login/customer";
+    private static final String SERVICE_URI = "http://10.0.40.165:8080/jazzers-backend-1.0-SNAPSHOT/api/v1";
 
     @GET
     public Response byProductName(@QueryParam("username") @DefaultValue("") String username, @QueryParam("password") @DefaultValue("") String password, @QueryParam("productName") @DefaultValue("") String productName) {
-        if (isNotAuthorized(username, password) || isNotOwner(username, productName)) {
+        if (isNotAuthorized(username, password) || isNotOwner(username, password, productName)) {
+
             return Response.status(Response.Status.UNAUTHORIZED).build();
+
         }
 
         Optional<Download> download = Download.findByProductName(productName);
@@ -35,25 +36,39 @@ public class DownloadResource {
         Client client = ClientBuilder.newClient();
 
         Response.Status loginStatus = client
-                .target(CREDENTIAL_SERVICE_URI + "?username=" + username + "&password=" + password)
+                .target(SERVICE_URI + "/login/customer?username=" + username + "&password=" + password)
                 .request(MediaType.APPLICATION_JSON).get()
                 .getStatusInfo().toEnum();
 
         client.close();
+
+
+        if(!loginStatus.equals(Response.Status.OK)) {
+
+            System.out.println("Not authorized!");
+        } else {
+            System.out.println("AUTHORIZED!");
+        }
 
         return !loginStatus.equals(Response.Status.OK);
     }
 
-    private boolean isNotOwner(String username, String productName) {
+    private boolean isNotOwner(String username,  String password, String productName) {
         Client client = ClientBuilder.newClient();
 
         Response.Status ownerStatus = client
-                .target(COLLECTION_SERVICE_OWNERSHIP_URI + "?username=" + username + "&productName=" + productName)
+                .target(SERVICE_URI + "/playlist/collection/ownership?username=" + username + "&password=" + password + "&productName=" + productName)
                 .request(MediaType.APPLICATION_JSON).get()
                 .getStatusInfo().toEnum();
 
         client.close();
 
+
+
+        if(!ownerStatus.equals(Response.Status.OK)) {
+            System.out.println("Not owner!!!");
+            System.out.println(ownerStatus);
+        }
         return !ownerStatus.equals(Response.Status.OK);
     }
 }

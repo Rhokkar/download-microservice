@@ -11,7 +11,6 @@ public class Download extends PanacheEntity {
     public String link;
 
     public Download() {
-
     }
 
     public static Optional<Download> findByProductName(String productName) {
